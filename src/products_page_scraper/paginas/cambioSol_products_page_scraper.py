@@ -15,18 +15,14 @@ class cambioSolPageScraper(CambioPageScraper):
         html = BeautifulSoup(content, "html.parser")
         return html
 
-    def get_cambio(self, html_content: BeautifulSoup) -> list[Cambio]:
-        cambio: list[Cambio] = []
+    def get_cambio(self, html_content: BeautifulSoup): 
 
-        precios = html_content.find_all("div", {"class": "rate-box sell"})
         name = ("CambioSol")
         
-        for index, item in enumerate(precios):
-            try:
-                item_price = item.text.strip().replace(",", "")
-                cambio.append(Cambio(name=name, price=str(item_price)))
-            except Exception as e:
-                print(f"Error con item {index}: {e}")
-                pass
+        compra =html_content.find("span",{"id": "buy-rate-display"})
+        venta =html_content.find("span",{"id": "sell-rate-display"})
 
-        return cambio
+        compra = f" {compra.get_text(strip=True)}" if compra else None
+        venta = f" {venta.get_text(strip=True)}" if venta else None
+
+        return {"name":name, "compra":compra, "venta": venta}
