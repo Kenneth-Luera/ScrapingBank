@@ -3,7 +3,7 @@ from .products_page_scraper import CambioPageScraper
 from bs4 import BeautifulSoup
 from time import sleep
 
-class intiCambioPageScraper(CambioPageScraper):
+class dichiKashPageScraper(CambioPageScraper):
 
     def __init__(self, driver) -> None:
         self.driver = driver
@@ -17,11 +17,11 @@ class intiCambioPageScraper(CambioPageScraper):
 
     def get_cambio(self, html_content: BeautifulSoup):
 
-        name = ("Inti")
+        name = ("dichiKash")
 
 
-        compra = html_content.find("label", {"id": "lblvalorcompra"})
-        venta = html_content.find("label", {"id": "lblvalorventa"})
+        compra = html_content.find("p", {"id": "dolarcompra"})
+        venta = html_content.find("p", {"id": "dolarventa"})
 
         compra = f"S/ {compra.get_text(strip=True)}" if compra else None
         venta = f"S/ {venta.get_text(strip=True)}" if venta else None
