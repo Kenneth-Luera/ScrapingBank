@@ -1,5 +1,5 @@
 
-
+import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -11,7 +11,6 @@ SECRET_KEY = 'django-insecure-$5c*=xyrhv%g28u-_jpj+x3cchltcd)-hg2*_d_$+-p(w*!(ab
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 
@@ -127,3 +126,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+
+ALLOWED_HOSTS = ['*']

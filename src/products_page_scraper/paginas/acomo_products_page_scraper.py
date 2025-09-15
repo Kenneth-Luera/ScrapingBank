@@ -25,11 +25,9 @@ class acomoPageScraper(CambioPageScraper):
 
         compra = f"{compra.get_text(strip=True)}" if compra else None
         venta = f"{venta.get_text(strip=True)}" if venta else None
-        
 
         print(name, "<<<<<<<<<<< name")
         print("Compra:", compra, "<<<<<<<<<<<")
         print("Venta:", venta, "<<<<<<<<<<<")
-
 
         return {"name":name, "compra":compra, "venta": venta}
