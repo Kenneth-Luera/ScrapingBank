@@ -10,7 +10,7 @@ class cambiaFXPageScraper(CambioPageScraper):
 
     def get_html(self, url: str) -> BeautifulSoup:
         self.driver.get(url)
-        sleep(30)
+        sleep(2)
         content = self.driver.page_source
         html = BeautifulSoup(content, "html.parser")
         return html

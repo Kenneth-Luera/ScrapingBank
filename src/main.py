@@ -50,7 +50,6 @@ def init():
     }
 
     cambiaFX_driver = create_driver()
-    sleep(30)
     cambiaFX_Cambio_Page_Scraper = cambiaFXPageScraper(driver=cambiaFX_driver)
     cambiaFX_search_result_html = cambiaFX_Cambio_Page_Scraper.get_html(urls["cambiaFX"])
     cambiaFX_cambio = cambiaFX_Cambio_Page_Scraper.get_cambio(html_content=cambiaFX_search_result_html)
