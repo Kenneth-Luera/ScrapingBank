@@ -10,7 +10,7 @@ class cambioMundialPageScraper(CambioPageScraper):
 
     def get_html(self, url: str) -> BeautifulSoup:
         self.driver.get(url)
-        sleep(2)
+        sleep(30)
         content = self.driver.page_source
         html = BeautifulSoup(content, "html.parser")
         return html

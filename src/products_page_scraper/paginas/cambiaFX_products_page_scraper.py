@@ -10,7 +10,7 @@ class cambiaFXPageScraper(CambioPageScraper):
 
     def get_html(self, url: str) -> BeautifulSoup:
         self.driver.get(url)
-        sleep(2)
+        sleep(30)
         content = self.driver.page_source
         html = BeautifulSoup(content, "html.parser")
         return html
@@ -28,10 +28,9 @@ class cambiaFXPageScraper(CambioPageScraper):
                     compra = parts[1]
                 elif parts[0].lower() == "venta":
                     venta = parts[1]
-
-        #print(name)
-        #print(compra)
-
-        #print(f"banco: {name}, compra: {compra}, venta: {venta}")
+                    
+        print(name, "<<<<<<<<<<< name")
+        print("Compra:", compra, "<<<<<<<<<<<")
+        print("Venta:", venta, "<<<<<<<<<<<")
 
         return {"name":name, "compra":compra, "venta":venta}

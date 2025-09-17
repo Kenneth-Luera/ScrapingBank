@@ -1,4 +1,8 @@
+import tempfile
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from time import sleep
 from src.products_page_scraper.paginas.cambiaFX_products_page_scraper import cambiaFXPageScraper
 from src.products_page_scraper.paginas.cambioMundial_products_page_scraper import cambioMundialPageScraper
 from src.products_page_scraper.paginas.cambioSol_products_page_scraper import cambioSolPageScraper
@@ -12,63 +16,99 @@ from src.products_page_scraper.paginas.acomo_products_page_scraper import acomoP
 
 print("aqui entra")
 
-def init():
-    options = webdriver.ChromeOptions()
+def create_driver():
+    options = Options()
     options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--log-level=3")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
-    options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
-    cambiaFX_search_result_url = "https://cambiafx.pe/"
-    cambioMundial_search_result_url = "https://www.cambiomundial.com/?utm_source=ced"
-    cambioSol_search_result_url = "https://cambiosol.pe/?utm_source=ced"
-    yanki_search_result_url = "https://yanki.pe/?utm_source=CED&utm_medium=paid&utm_campaign=diciembre"
-    inti_search_result_url = "https://www.cambiomundial.com/?utm_source=ced"
-    chapa_search_result_url = "https://chapacambio.com/?c=CHAPACUANTO"
-    dichiKash_search_result_url = "https://dichikash.com/?utm_source=ced"
-    digital_search_result_url = "https://cambiodigitalperu.com/"
-    wester_search_result_url = "https://www.westernunionperu.pe/cambiodemoneda?utm_source=ced&utm_content=listado"
-    acomo_search_result_url = "https://acomo.com.pe/"
+    temp_profile_dir = tempfile.mkdtemp()
+    options.add_argument(f"--user-data-dir={temp_profile_dir}")
 
-    cambiaFX_Cambio_Page_Scraper = cambiaFXPageScraper(driver=webdriver.Chrome(options=options))
-    cambiaFX_search_result_html = cambiaFX_Cambio_Page_Scraper.get_html(cambiaFX_search_result_url)
+    options.binary_location = "/usr/bin/google-chrome"
+    service = Service("/usr/local/bin/chromedriver")
+
+    driver = webdriver.Chrome(service=service, options=options)
+    return driver
+
+def init():
+
+
+    urls = {
+        "cambiaFX" : "https://cambiafx.pe/",
+        "cambioMundial" : "https://www.cambiomundial.com/?utm_source=ced",
+        "cambioSol" : "https://cambiosol.pe/?utm_source=ced",
+        "yanki" : "https://yanki.pe/?utm_source=CED&utm_medium=paid&utm_campaign=diciembre",
+        "inti" : "https://www.cambiomundial.com/?utm_source=ced",
+        "chapa" : "https://chapacambio.com/?c=CHAPACUANTO",
+        "dichiKash" : "https://dichikash.com/?utm_source=ced",
+        "digital" : "https://cambiodigitalperu.com/",
+        "wester" : "https://www.westernunionperu.pe/cambiodemoneda?utm_source=ced&utm_content=listado",
+        "acomo" : "https://acomo.com.pe/"
+    }
+
+    cambiaFX_driver = create_driver()
+    sleep(30)
+    cambiaFX_Cambio_Page_Scraper = cambiaFXPageScraper(driver=cambiaFX_driver)
+    cambiaFX_search_result_html = cambiaFX_Cambio_Page_Scraper.get_html(urls["cambiaFX"])
     cambiaFX_cambio = cambiaFX_Cambio_Page_Scraper.get_cambio(html_content=cambiaFX_search_result_html)
+    cambiaFX_driver.quit()
 
-    cambioMundial_Cambio_Page_Scraper = cambioMundialPageScraper(driver=webdriver.Chrome(options=options))
-    cambioMundial_search_result_html = cambioMundial_Cambio_Page_Scraper.get_html(cambioMundial_search_result_url)
+    cambioMundial_driver = create_driver()
+    cambioMundial_Cambio_Page_Scraper = cambioMundialPageScraper(driver=cambioMundial_driver)
+    cambioMundial_search_result_html = cambioMundial_Cambio_Page_Scraper.get_html(urls["cambioMundial"])
     cambioMundial_cambio = cambioMundial_Cambio_Page_Scraper.get_cambio(html_content=cambioMundial_search_result_html)
+    cambioMundial_driver.quit()
 
-    cambioSol_Cambio_Page_Scraper = cambioSolPageScraper(driver=webdriver.Chrome(options=options))
-    cambioSol_search_result_html = cambioSol_Cambio_Page_Scraper.get_html(cambioSol_search_result_url)
+    cambioSol_driver = create_driver()
+    cambioSol_Cambio_Page_Scraper = cambioSolPageScraper(driver=cambioSol_driver)
+    cambioSol_search_result_html = cambioSol_Cambio_Page_Scraper.get_html(urls["cambioSol"])
     cambioSol_cambio = cambioSol_Cambio_Page_Scraper.get_cambio(html_content=cambioSol_search_result_html)
-    
-    yanki_Cambio_Page_Scraper = yankiPageScraper(driver=webdriver.Chrome(options=options))
-    yanki_search_result_html = yanki_Cambio_Page_Scraper.get_html(yanki_search_result_url)
+    cambioSol_driver.quit()
+
+    yanki_driver = create_driver()
+    yanki_Cambio_Page_Scraper = yankiPageScraper(driver=yanki_driver)
+    yanki_search_result_html = yanki_Cambio_Page_Scraper.get_html(urls["yanki"])
     yanki_cambio = yanki_Cambio_Page_Scraper.get_cambio(html_content=yanki_search_result_html)
+    yanki_driver.quit()
     
-    inti_Cambio_Page_Scraper = intiCambioPageScraper(driver=webdriver.Chrome(options=options))
-    inti_search_result_html = inti_Cambio_Page_Scraper.get_html(inti_search_result_url)
+    inti_driver = create_driver()
+    inti_Cambio_Page_Scraper = intiCambioPageScraper(driver=inti_driver)
+    inti_search_result_html = inti_Cambio_Page_Scraper.get_html(urls["inti"])
     inti_cambio = inti_Cambio_Page_Scraper.get_cambio(html_content=inti_search_result_html)
+    inti_driver.quit()
     
-    chapa_Cambio_Page_Scraper = chapaCambioPageScraper(driver=webdriver.Chrome(options=options))
-    chapa_search_result_html = chapa_Cambio_Page_Scraper.get_html(chapa_search_result_url)
+    chapa_driver = create_driver()
+    chapa_Cambio_Page_Scraper = chapaCambioPageScraper(driver=chapa_driver)
+    chapa_search_result_html = chapa_Cambio_Page_Scraper.get_html(urls["chapa"])
     chapa_cambio = chapa_Cambio_Page_Scraper.get_cambio(html_content=chapa_search_result_html)
+    chapa_driver.quit()
     
-    dichikash_Cambio_Page_Scraper = dichiKashPageScraper(driver=webdriver.Chrome(options=options))
-    dichikash_search_result_html = dichikash_Cambio_Page_Scraper.get_html(dichiKash_search_result_url)
+    dichikash_driver = create_driver()
+    dichikash_Cambio_Page_Scraper = dichiKashPageScraper(driver=dichikash_driver)
+    dichikash_search_result_html = dichikash_Cambio_Page_Scraper.get_html(urls["dichiKash"])
     dichikash_cambio = dichikash_Cambio_Page_Scraper.get_cambio(html_content=dichikash_search_result_html)
+    dichikash_driver.quit()
 
-    digital_Cambio_Page_Scraper = digitalCambioPageScraper(driver=webdriver.Chrome(options=options))
-    digital_search_result_html = digital_Cambio_Page_Scraper.get_html(digital_search_result_url)
+    digital_driver = create_driver()
+    digital_Cambio_Page_Scraper = digitalCambioPageScraper(driver=digital_driver)
+    digital_search_result_html = digital_Cambio_Page_Scraper.get_html(urls["digital"])
     digital_cambio = digital_Cambio_Page_Scraper.get_cambio(html_content=digital_search_result_html)
+    digital_driver.quit()
 
-    westerUnion_Cambio_Page_Scraper = westerUnionPageScraper(driver=webdriver.Chrome(options=options))
-    westerUnion_search_result_html = westerUnion_Cambio_Page_Scraper.get_html(wester_search_result_url)
+    westerUnion_driver = create_driver()
+    westerUnion_Cambio_Page_Scraper = westerUnionPageScraper(driver=westerUnion_driver)
+    westerUnion_search_result_html = westerUnion_Cambio_Page_Scraper.get_html(urls["wester"])
     westerUnion_cambio = westerUnion_Cambio_Page_Scraper.get_cambio(html_content=westerUnion_search_result_html)
+    westerUnion_driver.quit()
 
-    acomo_Cambio_Page_Scraper = acomoPageScraper(driver=webdriver.Chrome(options=options))
-    acomo_search_result_html = acomo_Cambio_Page_Scraper.get_html(acomo_search_result_url)
+    acomo_driver = create_driver()
+    acomo_Cambio_Page_Scraper = acomoPageScraper(driver=acomo_driver)
+    acomo_search_result_html = acomo_Cambio_Page_Scraper.get_html(urls["acomo"])
     acomo_cambio = acomo_Cambio_Page_Scraper.get_cambio(html_content=acomo_search_result_html)
+    acomo_driver.quit()
 
     print(cambioMundial_cambio,"<<<<<<<<<<<<<<<<<<<<<<<<<<< aqui el cambio asdsada")
 
