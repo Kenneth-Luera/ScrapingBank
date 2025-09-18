@@ -6,7 +6,8 @@ Está compuesto por dos partes principales:
 - **Backend**: desarrollado en **Python Django** con **Celery** para la gestión de tareas asíncronas y **Selenium** para el scraping.  
 - **Frontend**: desarrollado en **React** con **Ant Design**, desplegado en **AWS S3**.  
 
-El backend está desplegado en **AWS EC2**.  
+El backend está desplegado en **AWS EC2** y pueden revisarlo y probar la funcionalidad en:
+ > **http://3.143.240.202:8000/api/lastScraping/**.  
 El repositorio actual contiene únicamente el **backend**.  
 El frontend se encuentra en un repositorio separado:  
  > **https://github.com/Kenneth-Luera/ScrapingBankFront**
