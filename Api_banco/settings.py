@@ -2,12 +2,13 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = 'django-insecure-$5c*=xyrhv%g28u-_jpj+x3cchltcd)-hg2*_d_$+-p(w*!(ab'
+SECRET_KEY = config('SECRET_KEY_DJANGO')
 
 DEBUG = True
 
